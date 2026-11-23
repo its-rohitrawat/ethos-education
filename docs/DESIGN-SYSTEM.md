@@ -81,7 +81,12 @@ All faces are SIL OFL, self-hosted from `src/app/fonts/` with `next/font/local`.
    - Inactive slides are `inert`.
    - On desktop each slide shows a testimonial video card; on phones it shows a compact "Watch … story" button.
 2. **Numbers row:** verified stats, or service facts until stats are verified.
-3. **"Worldwide" scene** (`WordScene`): a giant Fraunces-italic word with photos and floating story-video cards on several depth layers. It moves with scroll (CSS scroll-driven animations). On phones the section is shorter and the front photos are hidden.
+3. **"Worldwide" scene** (`WordScene`): a giant Fraunces-italic word with photos and floating story-video cards on several depth layers. It moves with scroll (CSS scroll-driven animations).
+   - **Phones (below 768px) have their own layout**, set per item through `floatStyle(at, sm)`.
+   - The word stacks as "World / wide" at 39vw.
+   - Six sharp photos (no blur) and three larger story cards are spread over the whole pinned stretch. The cards alternate lanes, crossing the screen at ⅕, ½ and ⅘ of it, so the screen is never crowded and never empty.
+   - The section is 190vh tall.
+   - The phone `top` values double as the still layout (reduced motion, or no scroll-driven animation support): cards and photos frame the word.
 4. **"What separates us from others":** photo collage beside four points with orange icons.
 5. **Six step cards**, then a "View admission programmes" button.
 6. **Programme podium** (`ProgrammePodium`): three image cards.

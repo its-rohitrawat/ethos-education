@@ -95,34 +95,62 @@ const creative = localFont({
   preload: false,
 });
 
-type Floater = { src: string; w: string; ratio: string; style: CSSProperties; hideSm?: boolean };
-const pos = (left: string, top: string, from: string, to: string) => ({ left, top, "--from": from, "--to": to }) as CSSProperties;
+/**
+ * Where a floating item rests (left / top, % of the stage), how far it drifts while the word is pinned
+ * (from → to) and how wide it is. `top` is also where it sits when scroll-driven animation is off.
+ */
+type Place = { left: string; top: string; from: string; to: string; w: string };
+const place = (left: string, top: string, from: string, to: string, w: string): Place => ({ left, top, from, to, w });
 
-/** Back layer: smaller, slower, slightly softened — sits behind the word. */
+/** Desktop placement, plus an optional phone placement (globals.css reads these custom properties). */
+function floatStyle(at: Place, sm?: Place): CSSProperties {
+  return {
+    "--x": at.left,
+    "--y": at.top,
+    "--from-d": at.from,
+    "--to-d": at.to,
+    "--w": at.w,
+    ...(sm ? { "--x-sm": sm.left, "--y-sm": sm.top, "--from-sm": sm.from, "--to-sm": sm.to, "--w-sm": sm.w } : {}),
+  } as CSSProperties;
+}
+
+/** Items without a phone placement are hidden on phones. */
+type Floater = { src: string; ratio: string; at: Place; sm?: Place };
+
+/*
+ * Phones get their own choreography: fewer, larger, sharper photos spread over the whole pinned
+ * stretch, so the screen is never crowded and never empty. Photos drift 80svh and story cards 180svh,
+ * staggered so each crosses the screen at a different point. The resting `top` values are the still
+ * layout (reduced motion, or no scroll-driven animation): cards and photos frame the word.
+ */
 const backLayer: Floater[] = [
-  { src: "/media/photos/campus-quad.webp", w: "clamp(5rem,9vw,9.5rem)", ratio: "4/5", style: pos("4%", "10%", "30vh", "-45vh") },
-  { src: "/media/photos/reading-room.webp", w: "clamp(5rem,8vw,8.5rem)", ratio: "4/3", style: pos("30%", "6%", "45vh", "-60vh"), hideSm: true },
-  { src: "/media/photos/library-hall.webp", w: "clamp(5rem,10vw,10rem)", ratio: "16/10", style: pos("58%", "14%", "20vh", "-40vh"), hideSm: true },
-  { src: "/media/photos/study-group.webp", w: "clamp(4.5rem,7vw,7.5rem)", ratio: "1/1", style: pos("84%", "8%", "35vh", "-55vh") },
-  { src: "/media/photos/student-writing.webp", w: "clamp(4.5rem,7.5vw,8rem)", ratio: "4/5", style: pos("10%", "62%", "60vh", "-70vh"), hideSm: true },
-  { src: "/media/photos/graduation-celebration.webp", w: "clamp(5rem,9vw,9rem)", ratio: "4/5", style: pos("40%", "66%", "70vh", "-80vh") },
-  { src: "/media/photos/mentoring.webp", w: "clamp(5rem,8vw,8.5rem)", ratio: "4/3", style: pos("66%", "70%", "55vh", "-65vh"), hideSm: true },
-  { src: "/media/photos/students-laptop.webp", w: "clamp(4.5rem,7vw,7.5rem)", ratio: "1/1", style: pos("88%", "58%", "80vh", "-85vh") },
+  { src: "/media/photos/campus-quad.webp", ratio: "4/5", at: place("4%", "10%", "30vh", "-45vh", "clamp(5rem,9vw,9.5rem)"), sm: place("64%", "10%", "2svh", "-78svh", "26vw") },
+  { src: "/media/photos/reading-room.webp", ratio: "4/3", at: place("30%", "6%", "45vh", "-60vh", "clamp(5rem,8vw,8.5rem)"), sm: place("8%", "-18%", "40svh", "-40svh", "28vw") },
+  { src: "/media/photos/library-hall.webp", ratio: "16/10", at: place("58%", "14%", "20vh", "-40vh", "clamp(5rem,10vw,10rem)"), sm: place("30%", "120%", "40svh", "-40svh", "32vw") },
+  { src: "/media/photos/study-group.webp", ratio: "1/1", at: place("84%", "8%", "35vh", "-55vh", "clamp(4.5rem,7vw,7.5rem)"), sm: place("36%", "38%", "40svh", "-40svh", "24vw") },
+  { src: "/media/photos/student-writing.webp", ratio: "4/5", at: place("10%", "62%", "60vh", "-70vh", "clamp(4.5rem,7.5vw,8rem)") },
+  { src: "/media/photos/graduation-celebration.webp", ratio: "4/5", at: place("40%", "66%", "70vh", "-80vh", "clamp(5rem,9vw,9rem)"), sm: place("66%", "70%", "40svh", "-40svh", "26vw") },
+  { src: "/media/photos/mentoring.webp", ratio: "4/3", at: place("66%", "70%", "55vh", "-65vh", "clamp(5rem,8vw,8.5rem)") },
+  { src: "/media/photos/students-laptop.webp", ratio: "1/1", at: place("88%", "58%", "80vh", "-85vh", "clamp(4.5rem,7vw,7.5rem)"), sm: place("8%", "95%", "40svh", "-40svh", "24vw") },
 ];
 
-/** Front layer: larger, faster, with real shadows — passes in front of the word. */
+/** Front layer: larger, faster, with real shadows — passes in front of the word (desktop only). */
 const frontLayer: Floater[] = [
-  { src: "/media/photos/student-focus.webp", w: "clamp(7rem,13vw,14rem)", ratio: "4/5", style: pos("-2%", "34%", "110vh", "-150vh"), hideSm: true },
-  { src: "/media/photos/campus-walk.webp", w: "clamp(7rem,14vw,15rem)", ratio: "4/3", style: pos("50%", "-6%", "140vh", "-170vh"), hideSm: true },
-  { src: "/media/photos/counselling-session.webp", w: "clamp(7rem,12vw,13rem)", ratio: "1/1", style: pos("80%", "30%", "125vh", "-160vh"), hideSm: true },
-  { src: "/media/photos/students-walking.webp", w: "clamp(7rem,13vw,14rem)", ratio: "16/10", style: pos("24%", "76%", "150vh", "-185vh"), hideSm: true },
+  { src: "/media/photos/student-focus.webp", ratio: "4/5", at: place("-2%", "34%", "110vh", "-150vh", "clamp(7rem,13vw,14rem)") },
+  { src: "/media/photos/campus-walk.webp", ratio: "4/3", at: place("50%", "-6%", "140vh", "-170vh", "clamp(7rem,14vw,15rem)") },
+  { src: "/media/photos/counselling-session.webp", ratio: "1/1", at: place("80%", "30%", "125vh", "-160vh", "clamp(7rem,12vw,13rem)") },
+  { src: "/media/photos/students-walking.webp", ratio: "16/10", at: place("24%", "76%", "150vh", "-185vh", "clamp(7rem,13vw,14rem)") },
 ];
 
-/** Story cards travel with the front layer, entering one after another. */
+/**
+ * Story cards travel with the front layer, entering one after another. On phones they are larger and
+ * alternate left / right lanes, each crossing the middle of the screen at a different point (⅕, ½, ⅘).
+ */
+const CARD_W = "clamp(8.5rem,13vw,13.5rem)";
 const storySlots = [
-  { className: "w-[clamp(7rem,13vw,13.5rem)] aspect-[9/16] max-md:!left-[5%]", style: pos("15%", "18%", "120vh", "-165vh") },
-  { className: "w-[clamp(7rem,13vw,13.5rem)] aspect-[9/16] max-md:!left-[54%]", style: pos("44%", "40%", "175vh", "-120vh") },
-  { className: "w-[clamp(7rem,13vw,13.5rem)] aspect-[9/16] max-md:!left-[12%]", style: pos("70%", "6%", "220vh", "-90vh") },
+  { className: "aspect-[9/16]", style: floatStyle(place("15%", "18%", "120vh", "-165vh", CARD_W), place("5%", "8%", "62.5svh", "-117.5svh", "min(38vw,15rem)")) },
+  { className: "aspect-[9/16]", style: floatStyle(place("44%", "40%", "175vh", "-120vh", CARD_W), place("57%", "61%", "63.5svh", "-116.5svh", "min(38vw,15rem)")) },
+  { className: "aspect-[9/16]", style: floatStyle(place("70%", "6%", "220vh", "-90vh", CARD_W), place("5%", "61%", "117.5svh", "-62.5svh", "min(38vw,15rem)")) },
 ];
 
 export function toSceneStories(stories: VideoStory[]): SceneStory[] {
@@ -141,7 +169,7 @@ export function toSceneStories(stories: VideoStory[]): SceneStory[] {
 
 export function WordScene({ stories }: { stories: SceneStory[] }) {
   return (
-    <section className={`word-scene relative h-[210vh] md:h-[280vh] ${creative.variable}`} aria-labelledby="scene-title">
+    <section className={`word-scene relative h-[190vh] md:h-[280vh] ${creative.variable}`} aria-labelledby="scene-title">
       <h2 id="scene-title" className="sr-only">
         Ethos students study at leading universities around the world
       </h2>
@@ -149,8 +177,8 @@ export function WordScene({ stories }: { stories: SceneStory[] }) {
         <DepthPointer />
         <div className="depth depth-back" aria-hidden="true">
           {backLayer.map((f) => (
-            <div key={f.src} className={`scene-float absolute overflow-hidden rounded-lg bg-mist ${f.hideSm ? "max-md:hidden" : ""}`} style={{ ...f.style, width: f.w, aspectRatio: f.ratio }}>
-              <Image src={f.src} alt="" fill sizes="10vw" className="object-cover" />
+            <div key={f.src} className={`scene-float absolute overflow-hidden rounded-lg bg-mist ${f.sm ? "" : "max-md:hidden"}`} style={{ ...floatStyle(f.at, f.sm), aspectRatio: f.ratio }}>
+              <Image src={f.src} alt="" fill sizes="(min-width: 768px) 10vw, 32vw" className="object-cover" />
             </div>
           ))}
         </div>
@@ -162,7 +190,7 @@ export function WordScene({ stories }: { stories: SceneStory[] }) {
         </div>
         <div className="depth depth-front">
           {frontLayer.map((f) => (
-            <div key={f.src} aria-hidden="true" className={`scene-float scene-front absolute overflow-hidden rounded-xl bg-mist ${f.hideSm ? "max-md:hidden" : ""}`} style={{ ...f.style, width: f.w, aspectRatio: f.ratio }}>
+            <div key={f.src} aria-hidden="true" className={`scene-float scene-front absolute overflow-hidden rounded-xl bg-mist ${f.sm ? "" : "max-md:hidden"}`} style={{ ...floatStyle(f.at, f.sm), aspectRatio: f.ratio }}>
               <Image src={f.src} alt="" fill sizes="15vw" className="object-cover" />
             </div>
           ))}

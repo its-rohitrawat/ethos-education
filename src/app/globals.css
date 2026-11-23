@@ -576,6 +576,24 @@ dialog.consultation-drawer::backdrop {
 .word-scene {
   view-timeline: --scene block;
 }
+/* Placement comes from custom properties set inline (Landing.tsx → floatStyle): a desktop layout and,
+   for items that show on phones, a separate phone layout. */
+.scene-float {
+  left: var(--x);
+  top: var(--y);
+  width: var(--w);
+  --from: var(--from-d);
+  --to: var(--to-d);
+}
+@media (width < 48rem) {
+  .scene-float {
+    left: var(--x-sm, var(--x));
+    top: var(--y-sm, var(--y));
+    width: var(--w-sm, var(--w));
+    --from: var(--from-sm, var(--from-d));
+    --to: var(--to-sm, var(--to-d));
+  }
+}
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
     .scene-float {
@@ -689,6 +707,29 @@ dialog.consultation-drawer::backdrop {
   color: transparent;
   -webkit-text-stroke: clamp(1px, 0.14vw, 2.5px) var(--color-ink);
   padding-right: 0.06em;
+}
+/* Phones: the word stacks on two lines ("World" / "wide", the second set to the right) so it fills the
+   tall screen. The italic ink of "World" spans ~2em and overhangs its box on the right by ~0.2em, so
+   39vw keeps it inside ~82% of the width at the 1.04 scale-up, and the right padding re-centres the ink.
+   Background photos stay crisp (no blur or fade at this size). */
+@media (width < 48rem) {
+  .scene-word {
+    font-size: 39vw;
+    line-height: 0.82;
+    padding-right: 0.3em;
+  }
+  .scene-word-solid,
+  .scene-word-outline {
+    display: block;
+  }
+  .scene-word-outline {
+    text-align: right;
+    -webkit-text-stroke-width: 1.5px;
+  }
+  .depth-back .scene-float {
+    filter: none;
+    opacity: 1;
+  }
 }
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
