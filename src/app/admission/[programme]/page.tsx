@@ -134,7 +134,7 @@ export default async function ProgrammePage({ params }: PageProps<"/admission/[p
         <section className={`section-y ${p.components ? "bg-mist" : ""}`} aria-labelledby="programme-faq-title">
           <div className="shell">
             <SectionHeader label="Questions" title={<span id="programme-faq-title">Before you decide.</span>} />
-            <div className="mt-12 max-w-4xl">
+            <div className="mx-auto mt-10 max-w-3xl">
               <FAQAccordion faqs={relevantFaqs} />
             </div>
           </div>

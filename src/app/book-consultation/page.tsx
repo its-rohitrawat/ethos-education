@@ -21,7 +21,7 @@ const expect = [
 
 export default function BookConsultationPage() {
   return (
-    <section className="pb-28 pt-[calc(var(--header-h)+3rem)] lg:pt-[calc(var(--header-h)+5rem)]">
+    <section className="pb-28 pt-12 lg:pt-16">
       <div className="shell">
         <Breadcrumbs items={[{ name: "Book a consultation", path: "/book-consultation/" }]} />
         {/* Mobile order: heading → form → reassurance. Desktop: heading + reassurance left, form right. */}

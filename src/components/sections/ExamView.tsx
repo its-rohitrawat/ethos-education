@@ -86,7 +86,7 @@ export function ExamView({ exam }: { exam: Exam }) {
         <section className="section-y" aria-labelledby="exam-faq-title">
           <div className="shell">
             <SectionHeader label="Questions" title={<span id="exam-faq-title">{exam.name}, answered.</span>} />
-            <div className="mt-12 max-w-4xl">
+            <div className="mx-auto mt-10 max-w-3xl">
               <FAQAccordion faqs={exam.faqs} />
             </div>
           </div>

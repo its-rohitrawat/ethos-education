@@ -19,7 +19,7 @@ export function ArticleView({ article, related }: { article: JournalArticle; rel
   return (
     <>
       <article>
-        <header className="pt-[calc(var(--header-h)+3rem)] lg:pt-[calc(var(--header-h)+5rem)]">
+        <header className="pt-12 lg:pt-16">
           <div className="shell">
             <Breadcrumbs
               items={[

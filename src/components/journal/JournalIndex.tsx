@@ -24,25 +24,25 @@ export function JournalIndex({
   const [lead, ...rest] = articles;
   return (
     <>
-      <section className="panel-sage relative pb-[calc(var(--radius-panel)+clamp(2.5rem,5vw,4.5rem))] pt-[calc(var(--header-h)+1.5rem)] lg:pt-[calc(var(--header-h)+2.5rem)]">
+      <section className="page-banner py-12 sm:py-16 lg:py-20">
         <div className="shell">
           <Breadcrumbs items={crumbs} />
           <div className="editorial-grid mt-10 gap-y-8">
             <div className="col-span-4 lg:col-span-8">
-              <Label>The Ethos Journal</Label>
-              <SplitTextHeading as="h1" trigger="load" className="t-display mt-5">
+              <Label className="text-accent-soft">The Ethos Journal</Label>
+              <SplitTextHeading as="h1" trigger="load" className="t-hero mt-3 !text-[clamp(1.9rem,1.2rem+2.8vw,3.25rem)]">
                 {title}
               </SplitTextHeading>
             </div>
-            <p className="col-span-4 self-end text-ink/85 lg:col-span-4">{intro}</p>
+            <p className="col-span-4 self-end text-canvas/85 lg:col-span-4">{intro}</p>
           </div>
-          <nav aria-label="Journal topics" className="mt-12 border-t border-ink/20 pt-5">
+          <nav aria-label="Journal topics" className="mt-10 border-t border-canvas/20 pt-5">
             <ul className="flex flex-wrap gap-2">
               <li>
                 <Link
                   href="/blog/"
                   aria-current={!activeTopic ? "page" : undefined}
-                  className="inline-flex min-h-10 items-center rounded-full border border-ink/30 px-4 text-[0.9rem] hover:border-ink aria-[current=page]:border-ink aria-[current=page]:bg-ink aria-[current=page]:text-canvas"
+                  className="inline-flex min-h-10 items-center rounded-full border border-canvas/35 px-4 text-[0.9rem] text-canvas hover:border-canvas aria-[current=page]:border-accent aria-[current=page]:bg-accent aria-[current=page]:text-canvas"
                 >
                   All
                 </Link>
@@ -52,7 +52,7 @@ export function JournalIndex({
                   <Link
                     href={`/blog/topic/${t.slug}/`}
                     aria-current={activeTopic === t.slug ? "page" : undefined}
-                    className="inline-flex min-h-10 items-center rounded-full border border-ink/30 px-4 text-[0.9rem] hover:border-ink aria-[current=page]:border-ink aria-[current=page]:bg-ink aria-[current=page]:text-canvas"
+                    className="inline-flex min-h-10 items-center rounded-full border border-canvas/35 px-4 text-[0.9rem] text-canvas hover:border-canvas aria-[current=page]:border-accent aria-[current=page]:bg-accent aria-[current=page]:text-canvas"
                   >
                     {t.label}
                   </Link>
@@ -61,7 +61,6 @@ export function JournalIndex({
             </ul>
           </nav>
         </div>
-      <div aria-hidden="true" className="absolute inset-x-0 bottom-0 h-[var(--radius-panel)] rounded-t-[var(--radius-panel)] bg-canvas" />
       </section>
 
       <section className="section-y pt-14">

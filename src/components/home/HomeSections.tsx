@@ -353,7 +353,7 @@ export function FAQSection({ faqs, title }: { faqs: Faq[]; title?: string }) {
           label="FAQ"
           title={<span id="faq-title">{title ?? "Questions, answered."}</span>}
         />
-        <div className="mt-12 max-w-4xl">
+        <div className="mx-auto mt-10 max-w-3xl">
           <FAQAccordion faqs={faqs} />
           <p className="mt-8 text-ink-soft">
             Have another question? <ArrowLink href="/faq/">See all FAQs</ArrowLink>

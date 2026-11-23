@@ -7,8 +7,6 @@ import { Analytics } from "@/components/layout/Analytics";
 import { ContactDock } from "@/components/layout/ContactDock";
 import { EditorialFooter } from "@/components/layout/EditorialFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
-import { MotionController } from "@/components/motion/MotionController";
-import { SmoothScroll } from "@/components/motion/SmoothScroll";
 import { navGroups } from "@/content/nav";
 import { site } from "@/content/site";
 import { getOffices } from "@/lib/cms";
@@ -56,18 +54,10 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#f9f9f0",
+  themeColor: "#ffffff",
   width: "device-width",
   initialScale: 1,
 };
-
-/**
- * Opening screen gate (runs before first paint). The intro plays only on a full load of the home page,
- * once per browser session, and never with reduced motion; otherwise html gets .intro-seen and the
- * overlay is display:none. The page is never scroll-locked: the first wheel / touch / key / click fades
- * the intro out at once (.intro-skip). Static string — no user input is interpolated.
- */
-const INTRO_GATE = `(function(){var d=document.documentElement;try{if(location.pathname!=="/"||sessionStorage.getItem("ethos-intro")||matchMedia("(prefers-reduced-motion: reduce)").matches){d.classList.add("intro-seen");return}sessionStorage.setItem("ethos-intro","1");d.classList.add("intro-playing");var ev=["wheel","touchstart","keydown","pointerdown"],done=false;function fin(){d.classList.add("intro-seen");d.classList.remove("intro-playing","intro-skip");ev.forEach(function(e){removeEventListener(e,skip)})}function skip(){if(done)return;done=true;d.classList.add("intro-skip");setTimeout(fin,350)}ev.forEach(function(e){addEventListener(e,skip,{passive:true})});setTimeout(function(){if(!done){done=true;fin()}},4000)}catch(e){d.classList.add("intro-seen")}})();`;
 
 async function SiteJsonLd() {
   "use cache";
@@ -79,9 +69,6 @@ async function SiteJsonLd() {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en-IN" className={`${heading.variable} ${body.variable} ${cards.variable}`} suppressHydrationWarning>
-      <head>
-        <script dangerouslySetInnerHTML={{ __html: INTRO_GATE }} />
-      </head>
       <body>
         <ConsultationProvider>
           <SiteHeader groups={navGroups} />
@@ -91,8 +78,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <EditorialFooter />
           <ContactDock />
           <Analytics />
-          <MotionController />
-          <SmoothScroll />
         </ConsultationProvider>
         <SiteJsonLd />
       </body>

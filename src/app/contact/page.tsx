@@ -19,11 +19,11 @@ export default async function ContactPage() {
   const offices = await getOffices();
   return (
     <>
-      <section className="panel-butter relative pb-[calc(var(--radius-panel)+clamp(3rem,7vw,6rem))] pt-[calc(var(--header-h)+1.5rem)] lg:pt-[calc(var(--header-h)+2.5rem)]">
+      <section className="page-banner py-12 sm:py-16 lg:py-20">
         <div className="shell">
           <Breadcrumbs items={[{ name: "Contact", path: "/contact/" }]} />
-          <Label className="mt-10">Contact</Label>
-          <SplitTextHeading as="h1" trigger="load" className="t-hero mt-5 !text-[clamp(3.4rem,11vw,12rem)]">
+          <Label className="mt-6 text-accent-soft">Contact</Label>
+          <SplitTextHeading as="h1" trigger="load" className="t-hero mt-3">
             Let’s <em>talk.</em>
           </SplitTextHeading>
           <div className="mt-12 grid gap-3 sm:grid-cols-3">
@@ -38,15 +38,14 @@ export default async function ContactPage() {
                 event={c.event}
                 source="contact-page"
                 external={c.external}
-                className="group rounded-[var(--radius-card)] bg-canvas p-6 transition-colors hover:bg-mist"
+                className="card group p-6 text-ink transition-colors hover:border-accent-bright"
               >
                 <span className="block text-[0.9rem] text-ink-soft">{c.label}</span>
-                <span className="mt-2 block text-[clamp(1.25rem,1.1rem+0.6vw,1.6rem)] font-semibold leading-tight tracking-[-0.02em] [overflow-wrap:anywhere] group-hover:text-brand-bright">{c.value}</span>
+                <span className="mt-2 block text-[clamp(1.25rem,1.1rem+0.6vw,1.6rem)] font-semibold leading-tight tracking-[-0.02em] [overflow-wrap:anywhere] group-hover:text-accent-ink">{c.value}</span>
               </TrackedLink>
             ))}
           </div>
         </div>
-      <div aria-hidden="true" className="absolute inset-x-0 bottom-0 h-[var(--radius-panel)] rounded-t-[var(--radius-panel)] bg-canvas" />
       </section>
 
       <section className="section-y">
