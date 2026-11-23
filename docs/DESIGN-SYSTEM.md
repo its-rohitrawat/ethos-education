@@ -2,11 +2,11 @@
 
 **Direction: a professional brochure site that follows the layout of the original ethoseducation.world** (client decision, 23 Nov 2026).
 - White and light-grey sections, the navy of the Ethos logo, and an orange accent (the logo's ember) for buttons and highlighted words.
-- **Four elements from the previous design were brought back at the client's request:**
-  - the 3D "Worldwide" scene
+- **Elements from the previous design brought back at the client's request:**
   - the programme podium cards
   - the logo-gradient footer
   - subtle reveal motion
+- The 3D "Worldwide" scene was brought back too, then removed at the client's request (23 Nov 2026). The **"Ethos at a glance"** bento grid replaced it.
 - The homepage banner is a slider.
 
 **Earlier directions** (all recoverable):
@@ -44,12 +44,11 @@ All faces are SIL OFL, self-hosted from `src/app/fonts/` with `next/font/local`.
 | Eyebrows | Bricolage Grotesque 700, uppercase, tracked, orange | `t-label` / `Label` |
 | Buttons and nav | Bricolage Grotesque 600–700, uppercase | `pillBase`, header |
 | **Card titles** | Fraunces 600, `SOFT` 50, `opsz` 48 | `t-card`: `clamp(1.2rem → 1.45rem)` |
-| "Worldwide" scene word | Fraunces italic | `.scene-word` |
 | Paragraphs | DM Sans 400 | body: 16–17px, line-height 1.7 |
 
 **Card titles:**
 - Card titles use **Fraunces**, which replaced Dancing Script on 23 Nov 2026 at the client's request.
-- Fraunces is a soft, warm serif. It reads well at card sizes, contrasts with Bricolage headings without fighting them, and is the same family as the Worldwide word.
+- Fraunces is a soft, warm serif. It reads well at card sizes and contrasts with Bricolage headings without fighting them. The bento tiles use it for names, destinations and step titles.
 - Tight cards override the size with `!text-[…]`, for example story names at 1.1rem and destination cards at 1.22rem on desktop.
 - `DancingScript-Variable.woff2` is no longer loaded.
 
@@ -81,12 +80,26 @@ All faces are SIL OFL, self-hosted from `src/app/fonts/` with `next/font/local`.
    - Inactive slides are `inert`.
    - On desktop each slide shows a testimonial video card; on phones it shows a compact "Watch … story" button.
 2. **Numbers row:** verified stats, or service facts until stats are verified.
-3. **"Worldwide" scene** (`WordScene`): a giant Fraunces-italic word with photos and floating story-video cards on several depth layers. It moves with scroll (CSS scroll-driven animations).
-   - **Phones (below 768px) have their own layout**, set per item through `floatStyle(at, sm)`.
-   - The word stacks as "World / wide" at 39vw.
-   - Six sharp photos (no blur) and three larger story cards are spread over the whole pinned stretch. The cards alternate lanes, crossing the screen at ⅕, ½ and ⅘ of it, so the screen is never crowded and never empty.
-   - The section is 190vh tall.
-   - The phone `top` values double as the still layout (reduced motion, or no scroll-driven animation support): cards and photos frame the word.
+3. **"Ethos at a glance"** (`components/home/AtAGlance.tsx`): a bento grid, chosen by the client from five mockups (option C). It replaced the Worldwide scene.
+   - The section is headed "Real students. Real routes. *One team behind them.*"
+   - **Tiles:**
+     - a large graduation photo with the headline and a "Book a consultation" button
+     - Ansh's and Riya's stories
+     - "5 specialists behind every student"
+     - the **six steps playing on a loop**
+     - the five destinations, each linking to its guide
+     - a one-on-one counselling photo
+   - **Story tiles** (`InlineStory.tsx`):
+     - The video plays **inside the tile**, with no dialog or new screen.
+     - Before playback the tile shows the portrait, name, university, length and an orange play button.
+     - During playback it has pause/play, mute/unmute and captions (CC) buttons, plus a thin progress line. Captions are on by default.
+     - Only one story plays at a time. A story pauses when scrolled off screen, and goes back to its portrait when it ends.
+   - **Steps tile** (`StepsTicker.tsx`):
+     - Shows each step in turn (icon, "Step 02 / 06", title) while its bar fills, about 2.8s per step, looping like a GIF.
+     - Hover or focus holds it, and a pause button stops it (WCAG 2.2.2).
+     - Under reduced motion it lists all six steps instead.
+   - **Layout:** four columns from 1024px. Below that, two columns in the same reading order, with the steps tile full-width.
+   - An earlier split-flap "Departures board" was tried here and set aside. It is kept in `../_theme-snapshots/2026-11-23-departures-board/`.
 4. **"What separates us from others":** photo collage beside four points with orange icons.
 5. **Six step cards**, then a "View admission programmes" button.
 6. **Programme podium** (`ProgrammePodium`): three image cards.
@@ -105,7 +118,10 @@ All faces are SIL OFL, self-hosted from `src/app/fonts/` with `next/font/local`.
   - Content that is already on screen at load is never hidden.
   - Nothing is hidden for reduced-motion users or when JavaScript is off.
 - **Hero slider:** crossfade with a slow image zoom, as described above.
-- **Worldwide scene:** scroll-linked depth drift, which is static under reduced motion.
+- **At a glance:** tiles rise in with the reveal stagger, the steps tile loops (pausable), and photos zoom gently on hover.
 - **Hover:** gentle image zoom on cards, colour changes, the podium caption expanding, and the podium badge's slow spin.
 - **Not used:** opening screen, smooth-scroll hijacking, animated headline splitting.
-- **Unused components:** `SmoothScroll`, `ScrollWords` and the older sections in `Landing.tsx` (everything except `WordScene` / `toSceneStories`) are not imported. They can be removed once the client confirms.
+- **Unused components:**
+  - `SmoothScroll`, `ScrollWords` and all of `Landing.tsx` are no longer imported. That includes the removed `WordScene`.
+  - Also unused: `stories/SceneStories.tsx`, the `.word-scene` / `.scene-*` / `.depth-*` CSS, and the silent story previews in `public/media/stories/previews/`.
+  - They can be removed once the client confirms.
