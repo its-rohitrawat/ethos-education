@@ -21,7 +21,7 @@ const expect = [
 
 export default function BookConsultationPage() {
   return (
-    <section className="pb-28 pt-[calc(var(--header-h)+3rem)] lg:pt-[calc(var(--header-h)+5rem)]">
+    <section className="pb-28 pt-12 lg:pt-16">
       <div className="shell">
         <Breadcrumbs items={[{ name: "Book a consultation", path: "/book-consultation/" }]} />
         {/* Mobile order: heading → form → reassurance. Desktop: heading + reassurance left, form right. */}
@@ -43,7 +43,7 @@ export default function BookConsultationPage() {
                 <li key={e.title} className="flex gap-4 rounded-[var(--radius-card)] bg-mist p-5">
                   <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-ink text-[0.8125rem] font-semibold text-canvas">{i + 1}</span>
                   <div className="pt-0.5">
-                    <h2 className="t-card !text-[1.5rem]">{e.title}</h2>
+                    <h2 className="t-card !text-[1.2rem]">{e.title}</h2>
                     <p className="mt-1 text-[0.95rem] text-ink-soft">{e.text}</p>
                   </div>
                 </li>

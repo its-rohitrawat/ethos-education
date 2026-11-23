@@ -12,7 +12,7 @@ export const legalDoc = (slug: LegalSlug) => (legal as Record<LegalSlug, LegalDo
 export function LegalPage({ slug }: { slug: LegalSlug }) {
   const doc = legalDoc(slug);
   return (
-    <article className="pb-28 pt-[calc(var(--header-h)+3rem)] lg:pt-[calc(var(--header-h)+5rem)]">
+    <article className="pb-28 pt-12 lg:pt-16">
       <div className="shell">
         <Breadcrumbs items={[{ name: doc.title, path: `/${slug}/` }]} />
         <div className="editorial-grid mt-10 gap-y-10">

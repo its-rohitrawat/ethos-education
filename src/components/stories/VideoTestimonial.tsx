@@ -71,7 +71,7 @@ export function VideoTestimonial({ story, size = "default" }: { story: VideoStor
           </blockquote>
         ) : null}
         <div className={`mt-auto border-t border-line pt-5 ${story.quote ? "mt-8" : ""}`}>
-          <p className="t-card !text-[1.5rem]">{story.speaker}</p>
+          <p className="t-card !text-[1.2rem]">{story.speaker}</p>
           {story.relation ? <p className="t-small text-ink-soft">{story.relation}</p> : null}
           <p className="t-label mt-3 text-xs text-ink-soft">
             {story.university} · {story.programme}

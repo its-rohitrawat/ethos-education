@@ -68,7 +68,7 @@ export default async function TestPrepPage() {
       <section className="section-y" aria-labelledby="tests-faq-title">
         <div className="shell">
           <SectionHeader label="Questions" title={<span id="tests-faq-title">About tests.</span>} />
-          <div className="mt-12 max-w-4xl">
+          <div className="mx-auto mt-10 max-w-3xl">
             <FAQAccordion faqs={faqs.filter((f) => f.category === "tests")} />
           </div>
         </div>

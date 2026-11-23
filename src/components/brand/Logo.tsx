@@ -18,11 +18,12 @@ export function EthosMark({ className = "", title }: { className?: string; title
 
 export function Logo({ className = "", onDark = false }: { className?: string; onDark?: boolean }) {
   return (
-    <Link href="/" className={`group inline-flex items-center gap-2.5 ${onDark ? "text-canvas" : ""} ${className}`}>
-      <EthosMark className="h-[1.6rem] w-auto transition-transform duration-500 ease-[var(--ease-editorial)] group-hover:rotate-[-6deg]" />
-      <span className="font-display text-[1.7rem] font-normal leading-none tracking-[-0.01em] [font-variation-settings:'opsz'_72]">
-        Ethos
-        <span className="sr-only"> Education — home</span>
+    <Link href="/" className={`inline-flex items-center gap-2.5 ${onDark ? "text-canvas" : "text-brand"} ${className}`}>
+      <EthosMark className="h-8 w-auto" />
+      <span className="flex flex-col leading-none">
+        <span className="font-display text-[1.45rem] font-bold tracking-[-0.02em]">Ethos</span>
+        <span className={`mt-0.5 font-display text-[0.58rem] font-semibold uppercase tracking-[0.32em] ${onDark ? "text-canvas/75" : "text-accent-ink"}`}>Education</span>
+        <span className="sr-only"> — home</span>
       </span>
     </Link>
   );

@@ -14,7 +14,7 @@ const suggestions = [
 
 export default function NotFound() {
   return (
-    <section className="pb-28 pt-[calc(var(--header-h)+4rem)] lg:pt-[calc(var(--header-h)+7rem)]">
+    <section className="pb-28 pt-16 lg:pt-24">
       <div className="shell mx-auto max-w-3xl text-center">
         <Label>Error 404</Label>
         <SplitTextHeading as="h1" trigger="load" className="t-hero mt-3 !text-[clamp(2.1rem,1.2rem+3.3vw,3.9rem)]">

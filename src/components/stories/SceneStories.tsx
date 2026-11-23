@@ -81,7 +81,7 @@ export function SceneStories({ stories, slots }: { stories: SceneStory[]; slots:
                   <path d="M8 5v14l11-7z" />
                 </svg>
               </span>
-              <span className="t-card mt-2 block !text-[1.35rem]">{s.speaker}</span>
+              <span className="t-card mt-2 block !text-[1.05rem]">{s.speaker}</span>
               <span className="block text-[0.75rem] text-canvas/80">{s.university}</span>
             </span>
           </button>

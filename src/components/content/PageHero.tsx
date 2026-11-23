@@ -1,36 +1,16 @@
+import Image from "next/image";
 import type { ReactNode } from "react";
 import type { Img } from "@/content/types";
-import { Reveal } from "@/components/motion/Reveal";
-import { RevealImage } from "@/components/motion/RevealImage";
-import { SplitTextHeading } from "@/components/motion/SplitTextHeading";
 import { Breadcrumbs, type Crumb } from "./Breadcrumbs";
 
 export type PanelTone = "butter" | "sage" | "coral" | "lilac" | "sky";
 
-/** Each section of the site has its own pastel, so the hero colour tells you where you are. */
-const toneBySection: Record<string, PanelTone> = {
-  "/about/": "butter",
-  "/admission/": "coral",
-  "/ivy-mentors/": "lilac",
-  "/test-prep/": "sage",
-  "/career-counselling/": "sky",
-  "/study-abroad/": "butter",
-  "/success-stories/": "lilac",
-  "/faq/": "sky",
-  "/blog/": "sage",
-  "/contact/": "butter",
-  "/book-consultation/": "lilac",
-};
-
-export function toneFor(path?: string): PanelTone {
-  if (!path) return "coral";
-  const key = Object.keys(toneBySection).find((k) => path.startsWith(k));
-  return key ? toneBySection[key] : "coral";
-}
+const fallback: Img = { src: "/media/photos/library-hall.webp", alt: "", width: 2400, height: 1600 };
 
 /**
- * Inner-page hero: a pastel panel with the title top-left, the introduction bottom-left and a photo on
- * the right. The cream page "slides over" its bottom edge with rounded corners.
+ * Inner-page banner in the original site's style: the page photograph under a navy overlay, with the
+ * breadcrumb trail, title, introduction and actions in white. An optional `aside` (e.g. test facts)
+ * sits on the right on large screens. (`tone` is accepted for compatibility.)
  */
 export function PageHero({
   label,
@@ -40,7 +20,6 @@ export function PageHero({
   image,
   actions,
   aside,
-  tone,
 }: {
   label?: string;
   index?: string;
@@ -52,48 +31,24 @@ export function PageHero({
   aside?: ReactNode;
   tone?: PanelTone;
 }) {
-  const colour = tone ?? toneFor(crumbs[0]?.path);
-  const side = image || aside;
+  const bg = image ?? fallback;
   return (
-    <section className={`panel-${colour} relative pb-[calc(var(--radius-panel)+clamp(3.5rem,8vw,7rem))] pt-[calc(var(--header-h)+1.5rem)] lg:pt-[calc(var(--header-h)+2.5rem)]`}>
-      <div className="shell">
+    <section className="page-banner overflow-hidden">
+      <Image src={bg.src} alt="" fill priority sizes="100vw" className="-z-20 object-cover" />
+      <div aria-hidden="true" className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgb(7_28_63/0.94)_0%,rgb(11_42_91/0.86)_55%,rgb(11_42_91/0.62)_100%)]" />
+      <div className="shell py-12 sm:py-16 lg:py-20">
         <Breadcrumbs items={crumbs} />
-        <div className={`mt-8 grid gap-10 lg:mt-10 ${side ? "lg:grid-cols-12 lg:gap-8" : ""}`}>
-          <Reveal hero className={`flex flex-col ${side ? "lg:col-span-7" : "max-w-5xl"}`}>
-            {label ? (
-              <p data-reveal className="t-label mb-5">
-                {label}
-              </p>
-            ) : null}
-            <SplitTextHeading as="h1" trigger="load" delay={0.05} className="t-display">
-              {title}
-            </SplitTextHeading>
-            {intro ? (
-              <div data-reveal className="mt-8 max-w-xl text-ink/85 lg:mt-auto lg:pt-16">
-                {intro}
-              </div>
-            ) : null}
-            {actions ? (
-              <div data-reveal className="mt-8 flex flex-wrap items-center gap-3">
-                {actions}
-              </div>
-            ) : null}
-          </Reveal>
-          {image ? (
-            <RevealImage
-              image={image}
-              hero
-              priority
-              sizes="(min-width: 1024px) 34vw, 92vw"
-              className="aspect-[4/3] w-full self-start rounded-[var(--radius-card)] bg-mist lg:col-span-4 lg:col-start-9 lg:aspect-[5/6]"
-            />
-          ) : aside ? (
-            <div className="self-start lg:col-span-5 lg:col-start-8">{aside}</div>
-          ) : null}
+        <div className={`mt-6 grid gap-8 ${aside ? "lg:grid-cols-12 lg:items-center" : ""}`}>
+          <div className={aside ? "lg:col-span-7" : "max-w-3xl"}>
+            {label ? <p className="t-label text-accent-soft">{label}</p> : null}
+            <h1 className="t-hero mt-3 !text-[clamp(1.9rem,1.2rem+2.8vw,3.25rem)]">{title}</h1>
+            <span aria-hidden="true" className="mt-5 block h-[3px] w-14 rounded-full bg-accent-bright" />
+            {intro ? <div className="t-lead mt-5 max-w-2xl text-canvas/85">{intro}</div> : null}
+            {actions ? <div className="mt-8 flex flex-wrap items-center gap-3">{actions}</div> : null}
+          </div>
+          {aside ? <div className="text-ink lg:col-span-5">{aside}</div> : null}
         </div>
       </div>
-      {/* The page beneath slides over the panel's bottom edge. */}
-      <div aria-hidden="true" className="absolute inset-x-0 bottom-0 h-[var(--radius-panel)] rounded-t-[var(--radius-panel)] bg-canvas" />
     </section>
   );
 }

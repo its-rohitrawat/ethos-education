@@ -245,14 +245,14 @@ export function ConsultationForm({
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => track("whatsapp_click", { source: "form-success" })}
-              className="inline-flex min-h-12 items-center gap-2 rounded-full border border-ink/80 px-5 font-medium hover:bg-ink hover:text-canvas"
+              className="inline-flex min-h-12 items-center gap-2 rounded-md border border-brand px-5 font-medium text-brand hover:bg-brand hover:text-canvas"
             >
               WhatsApp us
             </a>
             <a
               href={`tel:${site.phone.e164}`}
               onClick={() => track("phone_click", { source: "form-success" })}
-              className="inline-flex min-h-12 items-center gap-2 rounded-full border border-ink/80 px-5 font-medium hover:bg-ink hover:text-canvas"
+              className="inline-flex min-h-12 items-center gap-2 rounded-md border border-brand px-5 font-medium text-brand hover:bg-brand hover:text-canvas"
             >
               Call {site.phone.display}
             </a>
@@ -278,8 +278,8 @@ export function ConsultationForm({
           {step === 1 ? heading : <span ref={step2Heading} tabIndex={-1} className="outline-none">Anything else we should know?</span>}
         </h2>
         <div className="mt-6 flex gap-2" aria-hidden="true">
-          <span className="h-1 flex-1 rounded-full bg-ink" />
-          <span className={`h-1 flex-1 rounded-full transition-colors duration-500 ${step === 2 ? "bg-ink" : "bg-cloud"}`} />
+          <span className="h-1 flex-1 rounded-full bg-accent-bright" />
+          <span className={`h-1 flex-1 rounded-full transition-colors duration-500 ${step === 2 ? "bg-accent-bright" : "bg-cloud"}`} />
         </div>
       </header>
 
@@ -380,7 +380,7 @@ export function ConsultationForm({
                   onChange={() => set("studyLevel", o.value)}
                   className="peer sr-only"
                 />
-                <span className="inline-flex min-h-11 items-center rounded-full border border-line-strong bg-canvas px-4 text-[0.92rem] transition-colors peer-checked:border-brand peer-checked:bg-ink peer-checked:text-canvas peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-brand hover:border-ink">
+                <span className="inline-flex min-h-11 items-center rounded-full border border-line-strong bg-canvas px-4 text-[0.92rem] transition-colors peer-checked:border-brand peer-checked:bg-brand peer-checked:text-canvas peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-brand hover:border-ink">
                   {o.label}
                 </span>
               </label>
@@ -395,7 +395,7 @@ export function ConsultationForm({
         <div className="pt-2">
           <button
             type="submit"
-            className="group/btn inline-flex min-h-12 w-full items-center justify-center gap-3 rounded-full bg-ink px-6 font-medium text-canvas transition-colors hover:bg-brand-deep sm:w-auto"
+            className="group/btn inline-flex min-h-12 w-full items-center justify-center gap-3 rounded-md bg-accent px-7 font-display text-[0.85rem] font-bold uppercase tracking-[0.08em] text-canvas transition-colors hover:bg-[#a83a0b] sm:w-auto"
           >
             Continue <ArrowIcon className="transition-transform group-hover/btn:translate-x-1" />
           </button>
@@ -409,7 +409,7 @@ export function ConsultationForm({
             {roles.map((o) => (
               <label key={o.value} className="cursor-pointer">
                 <input type="radio" name="role" value={o.value} checked={values.role === o.value} onChange={() => set("role", o.value)} className="peer sr-only" />
-                <span className="inline-flex min-h-11 items-center rounded-full border border-line-strong bg-canvas px-4 text-[0.92rem] transition-colors peer-checked:border-brand peer-checked:bg-ink peer-checked:text-canvas peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-brand hover:border-ink">
+                <span className="inline-flex min-h-11 items-center rounded-full border border-line-strong bg-canvas px-4 text-[0.92rem] transition-colors peer-checked:border-brand peer-checked:bg-brand peer-checked:text-canvas peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-brand hover:border-ink">
                   {o.label}
                 </span>
               </label>
@@ -491,14 +491,14 @@ export function ConsultationForm({
         {TURNSTILE_SITE_KEY ? <div ref={turnstileBox} /> : null}
 
         <div className="flex flex-col-reverse gap-3 pt-2 sm:flex-row sm:items-center">
-          <button type="button" onClick={() => setStep(1)} className="min-h-12 rounded-full px-5 font-medium text-ink-soft hover:text-ink">
+          <button type="button" onClick={() => setStep(1)} className="min-h-12 rounded-md px-5 font-medium text-ink-soft hover:text-ink">
             Back
           </button>
           <button
             type="submit"
             disabled={status === "submitting"}
             aria-busy={status === "submitting"}
-            className="group/btn inline-flex min-h-12 flex-1 items-center justify-center gap-3 rounded-full bg-ink px-6 font-medium text-canvas transition-colors hover:bg-brand-deep disabled:opacity-70 sm:flex-none"
+            className="group/btn inline-flex min-h-12 flex-1 items-center justify-center gap-3 rounded-md bg-accent px-7 font-display text-[0.85rem] font-bold uppercase tracking-[0.08em] text-canvas transition-colors hover:bg-[#a83a0b] disabled:opacity-70 sm:flex-none"
           >
             {status === "submitting" ? (
               <>
