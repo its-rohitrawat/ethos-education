@@ -73,7 +73,7 @@ export function SceneStories({ stories, slots }: { stories: SceneStory[]; slots:
             <video data-preview="" muted loop playsInline preload="none" poster={s.poster} className="absolute inset-0 h-full w-full object-cover" aria-hidden="true">
               <source src={s.preview} type="video/mp4" />
             </video>
-            <span aria-hidden="true" className="absolute inset-0 bg-[linear-gradient(180deg,transparent_45%,rgb(0_0_0/0.65))]" />
+            <span aria-hidden="true" className="absolute inset-0 bg-[linear-gradient(180deg,transparent_45%,rgb(0_0_0/0.65))] max-md:bg-[linear-gradient(180deg,transparent_38%,rgb(0_0_0/0.6)_62%,rgb(0_0_0/0.88))]" />
             <span className="absolute inset-x-3 bottom-3 text-canvas" aria-hidden="true">
               <span className="inline-flex items-center gap-1.5 rounded-full bg-canvas px-3 py-1.5 font-display text-[0.8rem] font-semibold text-ink [font-variation-settings:'opsz'_24]">
                 Watch
