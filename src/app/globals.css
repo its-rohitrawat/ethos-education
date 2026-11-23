@@ -39,7 +39,7 @@
 
   --font-display: var(--font-heading), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-sans: var(--font-body), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
-  --font-script: var(--font-cards), "Brush Script MT", cursive;
+  --font-script: var(--font-cards), Georgia, "Times New Roman", serif;
   --font-mono: var(--font-body), ui-sans-serif, system-ui, sans-serif;
 
   --radius-card: 0.75rem;
@@ -178,13 +178,14 @@ body {
   text-wrap: balance;
 }
 
-/* Card titles (client choice): Dancing Script, bold. */
+/* Card titles: Fraunces semibold with soft terminals (same family as the Worldwide word). */
 @utility t-card {
   font-family: var(--font-script);
-  font-weight: 700;
-  font-size: clamp(1.45rem, 1.25rem + 0.6vw, 1.85rem);
-  line-height: 1.1;
-  letter-spacing: 0;
+  font-weight: 600;
+  font-variation-settings: "opsz" 48, "SOFT" 50, "WONK" 0;
+  font-size: clamp(1.2rem, 1.08rem + 0.45vw, 1.45rem);
+  line-height: 1.18;
+  letter-spacing: -0.01em;
   text-wrap: balance;
 }
 
@@ -453,4 +454,277 @@ dialog.consultation-drawer::backdrop {
 .prose-ethos thead th {
   font-weight: 600;
   background: var(--color-mist);
+}
+
+/* ------------------------------ Homepage banner slider (original-site style) ------------------------------ */
+/* Slides share one grid cell (the tallest sets the height) and crossfade. The active slide's photo
+   zooms slowly; its text and video card glide in with short staggered delays (--d). Dots fill over
+   the autoplay interval while the slider is running. Reduced motion: instant swaps, no zoom. */
+.hs-slide {
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.9s ease,
+    visibility 0s linear 0.9s;
+}
+.hs-slide.is-active {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.9s ease;
+  z-index: 1;
+}
+.hs-slide.is-active .hs-bg img {
+  animation: hs-zoom 9s ease-out both;
+}
+@keyframes hs-zoom {
+  from { transform: scale(1.12); }
+  to { transform: scale(1); }
+}
+.hs-in {
+  opacity: 0;
+  transform: translateY(22px);
+}
+.hs-slide.is-active .hs-in {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 0.7s ease,
+    transform 0.8s var(--ease-editorial);
+  transition-delay: calc(var(--d, 0ms) + 250ms);
+}
+.hs-ctrl {
+  display: inline-flex;
+  height: 2.5rem;
+  width: 2.5rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  border: 1px solid rgb(255 255 255 / 0.45);
+  color: var(--color-canvas);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+.hs-ctrl:hover {
+  background: var(--color-canvas);
+  color: var(--color-brand);
+}
+.hs-dot {
+  position: relative;
+  display: block;
+  height: 0.375rem;
+  width: 1.75rem;
+  overflow: hidden;
+  border-radius: 9999px;
+  background: rgb(255 255 255 / 0.35);
+  transition: width 0.3s ease;
+}
+.hs-dot.is-on {
+  width: 3rem;
+}
+.hs-dot-fill {
+  position: absolute;
+  inset: 0;
+  transform-origin: left;
+  transform: scaleX(0);
+  background: var(--color-accent-bright);
+}
+.hs-dot.is-on .hs-dot-fill {
+  transform: scaleX(1);
+}
+.hero-slider[data-running] .hs-dot.is-on .hs-dot-fill {
+  animation: hs-progress var(--hs-interval, 7s) linear both;
+}
+@keyframes hs-progress {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hs-slide.is-active .hs-bg img { animation: none; }
+  .hs-in { opacity: 1; transform: none; }
+}
+
+/* ==========================================================================
+   Brought back from the previous design (client choice, 23 Nov 2026) —
+   subtle scroll reveals, the Worldwide 3D scene, the podium badge and the logo-gradient footer.
+   ========================================================================== */
+/* Scroll reveals (IntersectionObserver + CSS transitions — components/motion/MotionController.tsx).
+   Content is visible by default; it is only hidden once JS has confirmed it is below the fold. */
+.reveal-armed [data-reveal],
+.reveal-armed[data-reveal-self] {
+  transition:
+    opacity 0.7s ease,
+    transform 0.8s var(--ease-editorial);
+}
+.reveal-armed:not(.reveal-in) [data-reveal],
+.reveal-armed:not(.reveal-in)[data-reveal-self] {
+  opacity: 0;
+  transform: translateY(18px);
+}
+.clip-armed {
+  transition:
+    opacity 1s var(--ease-editorial),
+    transform 1.2s var(--ease-editorial);
+}
+.clip-armed:not(.clip-in) {
+  opacity: 0;
+  transform: translateY(18px) scale(0.98);
+}
+
+
+/* ------------------------------ Homepage scenes ------------------------------ */
+/* Pinned giant word with photos drifting past at different speeds (CSS scroll-driven animations).
+   Browsers without support, and reduced-motion users, see the word with the photos at rest. */
+.word-scene {
+  view-timeline: --scene block;
+}
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .scene-float {
+      animation: scene-drift linear both;
+      animation-timeline: --scene;
+      animation-range: contain 0% contain 100%;
+    }
+    .scene-feature {
+      animation-name: scene-drift-centered;
+    }
+    .scene-word {
+      animation: scene-word linear both;
+      animation-timeline: --scene;
+      animation-range: contain 0% contain 100%;
+    }
+    /* Media grows from inset to full width as it enters. */
+    .grow-media {
+      animation: grow-media linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 45%;
+    }
+    /* Hero photograph drifts slowly as the page scrolls away. */
+    .hero-full .hero-media {
+      animation: hero-drift linear both;
+      animation-timeline: scroll(root block);
+      animation-range: 0 100vh;
+    }
+  }
+}
+@keyframes scene-drift {
+  from { transform: translateY(var(--from, 50vh)); }
+  to { transform: translateY(var(--to, -80vh)); }
+}
+@keyframes scene-drift-centered {
+  from { transform: translate(-50%, var(--from, 50vh)); }
+  to { transform: translate(-50%, var(--to, -80vh)); }
+}
+@keyframes scene-word {
+  from { transform: scale(0.92); }
+  to { transform: scale(1.04); }
+}
+@keyframes grow-media {
+  from { transform: scale(0.82); border-radius: 2rem; }
+  to { transform: none; }
+}
+@keyframes hero-drift {
+  to { transform: scale(1.08) translateY(6%); }
+}
+
+
+/* ------------------------------ Worldwide scene (3D) ------------------------------ */
+/* Three depth layers: photos behind the word (smaller, slower, softened), the word, and photos +
+   story films in front (larger, faster, shadowed). Pointer position (--px/--py from DepthPointer)
+   shifts each layer by a different amount for parallax; scroll drives the vertical drift. */
+.scene-stage {
+  --px: 0;
+  --py: 0;
+  perspective: 1400px;
+}
+.depth {
+  position: absolute;
+  inset: 0;
+  transition: transform 0.9s var(--ease-editorial);
+  will-change: transform;
+}
+.depth-back {
+  z-index: 1;
+  transform: translate3d(calc(var(--px) * -14px), calc(var(--py) * -10px), 0);
+}
+.depth-back .scene-float {
+  filter: saturate(0.85) blur(0.6px);
+  opacity: 0.92;
+}
+.depth-mid {
+  z-index: 2;
+  pointer-events: none;
+  transform: translate3d(calc(var(--px) * -26px), calc(var(--py) * -16px), 0) rotateY(calc(var(--px) * -4deg)) rotateX(calc(var(--py) * 3deg));
+}
+.depth-front {
+  z-index: 3;
+  pointer-events: none;
+  transform: translate3d(calc(var(--px) * 46px), calc(var(--py) * 30px), 0);
+}
+.depth-front .story-card {
+  pointer-events: auto;
+}
+.scene-front,
+.story-card {
+  box-shadow: 0 40px 70px -34px rgb(26 26 26 / 0.55);
+}
+.story-card {
+  transition: box-shadow 0.4s var(--ease-editorial);
+}
+.story-card:hover,
+.story-card:focus-visible {
+  box-shadow: 0 50px 90px -30px rgb(26 26 26 / 0.7);
+}
+.scene-word {
+  font-family: var(--font-creative), var(--font-display);
+  font-style: italic;
+  font-weight: 340;
+  font-variation-settings: "SOFT" 100, "WONK" 1, "opsz" 144;
+  /* "Worldwide" in Fraunces italic is ~3.45em wide: 24.5vw spans ~85% of the screen, leaving room
+     for the scroll-linked scale-up (to 1.04). */
+  font-size: clamp(3.6rem, 24.5vw, 28rem);
+  line-height: 0.85;
+  letter-spacing: -0.035em;
+  color: var(--color-ink);
+}
+.scene-word-outline {
+  color: transparent;
+  -webkit-text-stroke: clamp(1px, 0.14vw, 2.5px) var(--color-ink);
+  padding-right: 0.06em;
+}
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .depth-mid .scene-word {
+      animation: scene-word linear both;
+      animation-timeline: --scene;
+      animation-range: contain 0% contain 100%;
+    }
+  }
+}
+
+/* Rotating badge on the featured programme card. */
+.spin-badge svg {
+  animation: badge-spin 22s linear infinite;
+}
+@keyframes badge-spin {
+  to { transform: rotate(360deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .spin-badge svg { animation: none; }
+}
+
+
+/* ------------------------------ Footer: logo gradient ------------------------------ */
+/* The "dawn" from the Ethos logo artwork: midnight navy → crimson → ember → amber. Warm light is kept
+   behind the giant wordmark (bottom right); text areas stay on the dark side for contrast, and the
+   bottom bar sits on a darkened band. */
+.footer-dawn {
+  background:
+    radial-gradient(42% 55% at 92% 98%, rgb(245 166 35 / 0.95) 0%, transparent 70%),
+    radial-gradient(48% 60% at 62% 104%, rgb(240 90 26 / 0.9) 0%, transparent 70%),
+    radial-gradient(55% 60% at 100% 35%, rgb(158 15 30 / 0.85) 0%, transparent 72%),
+    radial-gradient(60% 70% at 18% 100%, rgb(122 14 30 / 0.75) 0%, transparent 75%),
+    linear-gradient(165deg, #090a22 0%, #12102a 38%, #2a0d22 62%, #4a0c1c 100%);
+  color: var(--color-canvas);
+}
+.footer-dawn .footer-base {
+  background: linear-gradient(180deg, rgb(9 10 34 / 0) 0%, rgb(9 10 34 / 0.55) 100%);
 }

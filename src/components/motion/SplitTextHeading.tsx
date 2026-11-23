@@ -4,17 +4,20 @@ type Props = {
   as?: ElementType;
   children: ReactNode;
   className?: string;
-  /** Kept for API compatibility; headings are no longer animated. */
+  /**
+   * "load": shown as-is (banners and page titles). "scroll" (default): fades up gently when it scrolls
+   * into view — armed by MotionController only if it starts below the fold, never with reduced motion.
+   */
   trigger?: "load" | "scroll";
   /** Kept for API compatibility. */
   delay?: number;
   id?: string;
 };
 
-/** Plain server-rendered heading (the brochure layout has no headline animation). */
-export function SplitTextHeading({ as: Tag = "h2", children, className = "", id }: Props) {
+/** Server-rendered heading with an optional subtle fade-up (no word splitting). */
+export function SplitTextHeading({ as: Tag = "h2", children, className = "", trigger = "scroll", id }: Props) {
   return (
-    <Tag id={id} className={className}>
+    <Tag id={id} className={className} data-reveal-root={trigger === "scroll" ? "" : undefined}>
       {children}
     </Tag>
   );

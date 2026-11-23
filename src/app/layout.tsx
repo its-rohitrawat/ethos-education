@@ -7,6 +7,7 @@ import { Analytics } from "@/components/layout/Analytics";
 import { ContactDock } from "@/components/layout/ContactDock";
 import { EditorialFooter } from "@/components/layout/EditorialFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
+import { MotionController } from "@/components/motion/MotionController";
 import { navGroups } from "@/content/nav";
 import { site } from "@/content/site";
 import { getOffices } from "@/lib/cms";
@@ -17,7 +18,7 @@ import "./globals.css";
  * Client's type choices (23 Nov 2026), all SIL Open Font License, self-hosted from app/fonts/ (variable
  * Latin WOFF2 files from Google Fonts — no network needed at build time):
  * Bricolage Grotesque for headings / navigation / labels / buttons, DM Sans for paragraphs,
- * Dancing Script (bold) for card titles.
+ * Fraunces (semibold, soft) for card titles — the same family as the Worldwide word.
  */
 const heading = localFont({
   src: [{ path: "./fonts/BricolageGrotesque-Variable.woff2", weight: "200 800", style: "normal" }],
@@ -34,10 +35,11 @@ const body = localFont({
   fallback: ["ui-sans-serif", "system-ui", "Segoe UI", "Arial", "sans-serif"],
 });
 const cards = localFont({
-  src: [{ path: "./fonts/DancingScript-Variable.woff2", weight: "400 700", style: "normal" }],
+  src: [{ path: "./fonts/Fraunces-Variable.woff2", weight: "100 900", style: "normal" }],
   display: "swap",
   variable: "--font-cards",
-  fallback: ["Brush Script MT", "cursive"],
+  adjustFontFallback: "Times New Roman",
+  fallback: ["Georgia", "Times New Roman", "serif"],
 });
 
 export const metadata: Metadata = {
@@ -78,6 +80,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <EditorialFooter />
           <ContactDock />
           <Analytics />
+          <MotionController />
         </ConsultationProvider>
         <SiteJsonLd />
       </body>

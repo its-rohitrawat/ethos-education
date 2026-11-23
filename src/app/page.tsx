@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
-import { BrochureHero, CareerBlock, ConsultBlock, Destinations, FAQBand, Numbers, Steps, StoriesBand, WhyEthos, toStoryVideos } from "@/components/home/Brochure";
+import { CareerBlock, ConsultBlock, Destinations, FAQBand, Numbers, ProgrammePodium, Steps, StoriesBand, WhyEthos, heroSlides, toStoryVideos } from "@/components/home/Brochure";
+import { WordScene, toSceneStories } from "@/components/home/Landing";
+import { HeroSlider } from "@/components/home/HeroSlider";
 import { homepageFaqIds } from "@/content/faqs";
-import { getDestinations, getFaqs, getProcessSteps, getStats, getVideoStories } from "@/lib/cms";
+import { getDestinations, getFaqs, getProcessSteps, getProgrammes, getStats, getVideoStories } from "@/lib/cms";
 import { pageMetadata } from "@/lib/seo";
 
 const base = pageMetadata({
@@ -17,7 +19,7 @@ export const metadata: Metadata = {
 };
 
 export default async function HomePage() {
-  const [stories, stats, steps, destinations, faqs] = await Promise.all([getVideoStories(), getStats(), getProcessSteps(), getDestinations(), getFaqs()]);
+  const [stories, stats, steps, destinations, faqs, programmes] = await Promise.all([getVideoStories(), getStats(), getProcessSteps(), getDestinations(), getFaqs(), getProgrammes()]);
   const videos = toStoryVideos(stories);
   const homeFaqs = homepageFaqIds
     .map((id) => faqs.find((f) => f.id === id))
@@ -26,11 +28,13 @@ export default async function HomePage() {
 
   return (
     <>
-      <BrochureHero story={videos[0]} />
+      <HeroSlider slides={heroSlides(videos)} />
       <Numbers stats={stats} />
-      <StoriesBand stories={videos} />
+      <WordScene stories={toSceneStories(stories)} />
       <WhyEthos />
       <Steps steps={steps} />
+      <ProgrammePodium programmes={programmes} />
+      <StoriesBand stories={videos} />
       <CareerBlock />
       <ConsultBlock />
       <Destinations destinations={destinations} />

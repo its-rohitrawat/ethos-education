@@ -1,7 +1,8 @@
 import { cacheLife } from "next/cache";
 import Link from "next/link";
-import { Logo } from "@/components/brand/Logo";
+import { EthosMark, Logo } from "@/components/brand/Logo";
 import { TrackedLink } from "@/components/layout/TrackedLink";
+import { ConsultationButton } from "@/components/consultation/ConsultationButton";
 import { exams } from "@/content/exams";
 import { site, whatsappHref } from "@/content/site";
 import { getOffices } from "@/lib/cms";
@@ -32,7 +33,20 @@ const socialIcon: Record<string, string> = {
   Facebook: "M13.5 21v-7.6h2.56l.38-2.97H13.5V8.53c0-.86.24-1.45 1.47-1.45h1.57V4.43a21 21 0 0 0-2.29-.12c-2.27 0-3.82 1.39-3.82 3.93v2.19H7.87v2.97h2.56V21h3.07Z",
 };
 
-/** Footer in the original site's layout: offices, test prep, company and useful links, social icons. */
+function ColumnTitle({ children }: { children: string }) {
+  return (
+    <>
+      <h2 className="font-display text-[1rem] font-bold text-canvas">{children}</h2>
+      <span aria-hidden="true" className="mt-2 block h-[2px] w-10 bg-accent-bright" />
+    </>
+  );
+}
+
+/**
+ * Footer on the Ethos logo gradient (midnight navy → crimson → ember → amber), with the original site's
+ * columns: contact + social, test prep, company, useful links, then offices. The warm light sits behind
+ * the large wordmark (bottom right); text stays on the dark side, and the legal bar is on a dark band.
+ */
 export async function EditorialFooter() {
   "use cache";
   cacheLife("days");
@@ -40,24 +54,24 @@ export async function EditorialFooter() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="border-t border-line bg-mist text-[0.92rem] text-ink-soft">
+    <footer className="footer-dawn relative overflow-hidden text-[0.92rem] text-canvas/80">
       <div className="shell grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-12 lg:gap-8 lg:py-16">
         <div className="lg:col-span-4">
-          <Logo />
+          <Logo onDark />
           <p className="mt-4 max-w-sm">{site.mission}</p>
-          <ul className="mt-5 space-y-1.5 text-ink">
+          <ul className="mt-5 space-y-1.5 text-canvas">
             <li>
-              <TrackedLink href={`tel:${site.phone.e164}`} event="phone_click" source="footer" className="font-semibold hover:text-accent-ink">
+              <TrackedLink href={`tel:${site.phone.e164}`} event="phone_click" source="footer" className="font-semibold hover:text-accent-soft">
                 {site.phone.display}
               </TrackedLink>
             </li>
             <li>
-              <TrackedLink href={`mailto:${site.email}`} event="email_click" source="footer" className="hover:text-accent-ink">
+              <TrackedLink href={`mailto:${site.email}`} event="email_click" source="footer" className="hover:text-accent-soft">
                 {site.email}
               </TrackedLink>
             </li>
             <li>
-              <TrackedLink href={whatsappHref()} event="whatsapp_click" source="footer" external className="hover:text-accent-ink">
+              <TrackedLink href={whatsappHref()} event="whatsapp_click" source="footer" external className="hover:text-accent-soft">
                 Chat on WhatsApp
               </TrackedLink>
             </li>
@@ -65,7 +79,7 @@ export async function EditorialFooter() {
           <ul className="mt-5 flex gap-2">
             {site.social.map((s) => (
               <li key={s.href}>
-                <a href={s.href} target="_blank" rel="noopener noreferrer" aria-label={s.label} className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-brand text-canvas transition-colors hover:bg-accent">
+                <a href={s.href} target="_blank" rel="noopener noreferrer" aria-label={s.label} className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-canvas/10 text-canvas ring-1 ring-canvas/20 transition-colors hover:bg-accent">
                   <svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor" aria-hidden="true">
                     <path d={socialIcon[s.label] ?? ""} />
                   </svg>
@@ -73,15 +87,17 @@ export async function EditorialFooter() {
               </li>
             ))}
           </ul>
+          <ConsultationButton source="footer" className="mt-6">
+            Book your consultation
+          </ConsultationButton>
         </div>
 
         <nav aria-label="Test preparation" className="lg:col-span-3">
-          <h2 className="font-display text-[1rem] font-bold text-ink">Test Prep Services</h2>
-          <span aria-hidden="true" className="mt-2 block h-[2px] w-10 bg-accent-bright" />
+          <ColumnTitle>Test Prep Services</ColumnTitle>
           <ul className="mt-4 grid grid-cols-2 gap-x-4 gap-y-2">
             {exams.map((e) => (
               <li key={e.slug}>
-                <Link href={e.path} className="hover:text-accent-ink">
+                <Link href={e.path} className="hover:text-accent-soft">
                   {e.name}
                 </Link>
               </li>
@@ -90,12 +106,11 @@ export async function EditorialFooter() {
         </nav>
 
         <nav aria-label="Company" className="lg:col-span-2">
-          <h2 className="font-display text-[1rem] font-bold text-ink">Company</h2>
-          <span aria-hidden="true" className="mt-2 block h-[2px] w-10 bg-accent-bright" />
+          <ColumnTitle>Company</ColumnTitle>
           <ul className="mt-4 space-y-2">
             {company.map((l) => (
               <li key={l.href}>
-                <Link href={l.href} className="hover:text-accent-ink">
+                <Link href={l.href} className="hover:text-accent-soft">
                   {l.label}
                 </Link>
               </li>
@@ -104,12 +119,11 @@ export async function EditorialFooter() {
         </nav>
 
         <nav aria-label="Useful links" className="lg:col-span-3">
-          <h2 className="font-display text-[1rem] font-bold text-ink">Useful Links</h2>
-          <span aria-hidden="true" className="mt-2 block h-[2px] w-10 bg-accent-bright" />
+          <ColumnTitle>Useful Links</ColumnTitle>
           <ul className="mt-4 space-y-2">
             {useful.map((l) => (
               <li key={l.href}>
-                <Link href={l.href} className="hover:text-accent-ink">
+                <Link href={l.href} className="hover:text-accent-soft">
                   {l.label}
                 </Link>
               </li>
@@ -118,15 +132,15 @@ export async function EditorialFooter() {
         </nav>
       </div>
 
-      <div className="border-t border-line">
-        <div className="shell grid gap-6 py-10 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="shell grid items-end gap-10 border-t border-line-inverse py-10 lg:grid-cols-12">
+        <div className="grid gap-6 sm:grid-cols-2 lg:col-span-7">
           {offices.map((o) => (
             <div key={o.city} className="flex gap-3">
-              <svg viewBox="0 0 24 24" className="mt-1 h-4 w-4 shrink-0 text-accent-bright" fill="currentColor" aria-hidden="true">
+              <svg viewBox="0 0 24 24" className="mt-1 h-4 w-4 shrink-0 text-accent-soft" fill="currentColor" aria-hidden="true">
                 <path d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5Z" />
               </svg>
               <div>
-                <p className="font-semibold text-ink">{o.city}</p>
+                <p className="font-semibold text-canvas">{o.city}</p>
                 <p className="text-[0.85rem]">
                   {o.role ? `${o.role} · ` : ""}
                   {o.region}
@@ -144,9 +158,13 @@ export async function EditorialFooter() {
             </div>
           ))}
         </div>
+        <div className="flex items-end justify-start gap-[1.5vw] text-canvas lg:col-span-5 lg:justify-end" aria-hidden="true">
+          <EthosMark className="h-[clamp(3.25rem,7vw,6.5rem)] w-auto" />
+          <span className="font-display text-[clamp(3.75rem,9vw,8.5rem)] font-bold leading-[0.8] tracking-[-0.03em]">Ethos</span>
+        </div>
       </div>
 
-      <div className="bg-brand text-[0.85rem] text-canvas/85">
+      <div className="bg-[#090a22]/80 text-[0.85rem] text-canvas/85">
         <div className="shell flex flex-col gap-2 py-4 sm:flex-row sm:items-center sm:justify-between">
           <p>
             Copyright © {year} {site.legalName}. All rights reserved.

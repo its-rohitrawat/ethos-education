@@ -80,7 +80,7 @@ export function StoryVideos({ stories, mode = "grid" }: { stories: StoryVideo[];
                   {s.durationSeconds ? <span className="absolute right-2 top-2 rounded bg-brand-deep/80 px-1.5 py-0.5 text-[0.7rem]">{mmss(s.durationSeconds)}</span> : null}
                 </span>
                 <span className="flex flex-1 flex-col items-center px-3 py-4 text-center" aria-hidden="true">
-                  <span className="t-card !text-[1.35rem]">{s.speaker}</span>
+                  <span className="t-card !text-[1.1rem]">{s.speaker}</span>
                   {s.relation ? <span className="mt-0.5 text-[0.72rem] text-canvas/70">({s.relation})</span> : null}
                   <span className="mt-2 text-[0.78rem] font-semibold text-accent-soft">{s.programme}</span>
                   <span className="text-[0.75rem] text-canvas/80">{s.university}</span>

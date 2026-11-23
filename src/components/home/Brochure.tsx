@@ -6,9 +6,10 @@ import { ConsultationButton } from "@/components/consultation/ConsultationButton
 import { ConsultationForm } from "@/components/consultation/ConsultationForm";
 import { TrackedLink } from "@/components/layout/TrackedLink";
 import { StoryVideos, type StoryVideo } from "@/components/stories/StoryVideos";
+import type { HeroSlide } from "./HeroSlider";
 import { ArrowLink, ButtonLink, CheckList, ChevronIcon, Label, SectionHeader } from "@/components/ui/primitives";
 import { site } from "@/content/site";
-import type { Destination, Faq, ProcessStep, Stat, VideoStory } from "@/content/types";
+import type { Destination, Faq, ProcessStep, Programme, Stat, VideoStory } from "@/content/types";
 
 /* ==================================================================================================
    Homepage in the layout of the original ethoseducation.world (professional brochure, no effects):
@@ -29,6 +30,43 @@ export const toStoryVideos = (stories: VideoStory[]): StoryVideo[] =>
     captions: s.video.captions,
     durationSeconds: s.video.durationSeconds,
   }));
+
+/* ------------------------------------------- Banner slider -------------------------------------- */
+/**
+ * The three slides of the original homepage banner, each paired with the same testimonial as on the
+ * original (Ansh, Lakshya, Nikita). The original third slide claimed "1000+ families"; that figure is
+ * unverified, so the slide keeps its message without the number (see CONTENT-VERIFICATION.md).
+ */
+export function heroSlides(videos: StoryVideo[]): HeroSlide[] {
+  const v = (id: string) => videos.find((x) => x.id === id);
+  return [
+    {
+      id: "mentors",
+      em: "Ivy League Mentors",
+      after: "Turn Ambition into Admission Offers",
+      lead: "With 1-on-1 mentorship, proven strategies and personalised support, students at Ethos Education secure admits at the world’s top universities.",
+      image: { src: "/media/photos/campus-quad.webp", alt: "" },
+      video: v("ansh-chawla"),
+    },
+    {
+      id: "dream-school",
+      before: "Maximise Your Chances to Get to Your",
+      em: "Dream School",
+      lead: "A student-first approach: 1-on-1 personalised counselling by Ethos study-abroad consultants, with visa and scholarship guidance.",
+      image: { src: "/media/photos/graduation-celebration.webp", alt: "" },
+      video: v("lakshya-madaan"),
+    },
+    {
+      id: "parents",
+      before: "For students — and the",
+      em: "parents",
+      after: "beside them",
+      lead: "Families from India and abroad come to Ethos for admissions to the Ivy League and the world’s top universities, including leading institutions in India.",
+      image: { src: "/media/photos/campus-walk.webp", alt: "" },
+      video: v("nikita-singhal"),
+    },
+  ];
+}
 
 /* ------------------------------------------------ Hero ------------------------------------------- */
 export function BrochureHero({ story }: { story?: StoryVideo }) {
@@ -160,9 +198,9 @@ export function WhyEthos() {
             What <em>separates us</em> from others
           </h2>
           <span aria-hidden="true" className="mt-4 block h-[3px] w-14 rounded-full bg-accent-bright" />
-          <ul className="mt-8 space-y-6">
+          <ul className="mt-8 space-y-6" data-reveal-root="" data-stagger="0.08">
             {separators.map((s) => (
-              <li key={s.title} className="flex gap-4">
+              <li key={s.title} data-reveal className="flex gap-4">
                 <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-accent text-canvas" aria-hidden="true">
                   <svg viewBox="0 0 24 24" className="h-6 w-6" fill="currentColor">
                     {s.icon}
@@ -207,9 +245,9 @@ export function Steps({ steps }: { steps: ProcessStep[] }) {
           }
           intro="From your first conversation to your first day on campus — one plan, one team."
         />
-        <ol className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <ol className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3" data-reveal-root="" data-stagger="0.07">
           {steps.map((s, i) => (
-            <li key={s.index} className="card relative border-t-4 !border-t-accent-bright p-6 lg:p-7">
+            <li key={s.index} data-reveal className="card relative border-t-4 !border-t-accent-bright p-6 lg:p-7">
               <div className="flex items-center justify-between">
                 <span className="t-label text-accent-ink">Step {i + 1}</span>
                 <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[#fdeee6] text-accent" aria-hidden="true">
@@ -228,6 +266,79 @@ export function Steps({ steps }: { steps: ProcessStep[] }) {
             View admission programmes
           </ButtonLink>
         </div>
+      </div>
+    </section>
+  );
+}
+
+/* ------------------------------------- Programme podium cards ------------------------------------ */
+/**
+ * Brought back from the previous design: three image-filled cards — the first and last exactly the same
+ * size (photos cropped to fill), the middle one taller with a slowly rotating badge. Each caption grows
+ * on hover / focus to reveal the summary (always open on touch screens). The whole card is one link.
+ */
+export function ProgrammePodium({ programmes }: { programmes: Programme[] }) {
+  return (
+    <section className="section-y" aria-labelledby="podium-title">
+      <div className="shell">
+        <SectionHeader
+          label="Admission programmes"
+          title={
+            <span id="podium-title">
+              Three ways to <em>work with Ethos</em>
+            </span>
+          }
+          intro="Each programme is built around a different kind of goal — and each one starts with a conversation."
+        />
+        <ul className="mt-12 grid gap-5 md:grid-cols-3 md:items-center" data-reveal-root="" data-stagger="0.1">
+          {programmes.slice(0, 3).map((p, i) => {
+            const featured = i === 1;
+            const height = featured ? "h-[30rem] md:h-[clamp(32rem,44vw,40rem)]" : "h-[30rem] md:h-[clamp(26rem,36vw,33rem)]";
+            const caption = featured ? "bg-brand text-canvas" : "bg-canvas text-ink";
+            return (
+              <li key={p.slug} data-reveal className={["group relative isolate overflow-hidden rounded-xl bg-brand shadow-lg", height].join(" ")}>
+                <Image src={p.image.src} alt={p.image.alt} fill sizes="(min-width: 768px) 32vw, 92vw" className="-z-10 object-cover transition-transform duration-700 group-hover:scale-[1.05]" />
+                <div aria-hidden="true" className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgb(7_28_63/0.45),transparent_38%)]" />
+                <Link href={"/admission/" + p.slug + "/"} className="absolute inset-0 rounded-xl" aria-label={p.name + " — " + p.kicker} />
+                <span aria-hidden="true" className="absolute left-5 top-4 font-display text-[clamp(2.2rem,3.5vw,3.25rem)] font-bold leading-none text-canvas/90">
+                  0{i + 1}
+                </span>
+                {featured ? (
+                  <span aria-hidden="true" className="spin-badge absolute right-4 top-4 h-24 w-24 text-canvas">
+                    <svg viewBox="0 0 100 100" className="h-full w-full">
+                      <defs>
+                        <path id="podium-badge" d="M50,50 m-38,0 a38,38 0 1,1 76,0 a38,38 0 1,1 -76,0" />
+                      </defs>
+                      <text className="fill-current font-display text-[10.5px] font-bold uppercase tracking-[0.18em]">
+                        <textPath href="#podium-badge">Explore · Ethos · Explore · Ethos ·</textPath>
+                      </text>
+                    </svg>
+                  </span>
+                ) : null}
+                <div className={["pointer-events-none absolute inset-x-3 bottom-3 rounded-lg p-5 shadow-lg", caption].join(" ")}>
+                  <div className="flex items-start justify-between gap-3">
+                    <h3 className="t-card min-w-0">{p.shortName}</h3>
+                    <span aria-hidden="true" className="inline-flex shrink-0 items-center gap-1 rounded-md bg-accent px-3 py-1.5 font-display text-[0.72rem] font-bold uppercase tracking-[0.08em] text-canvas">
+                      Explore
+                      <ChevronIcon className="transition-transform duration-200 group-hover:translate-x-0.5" />
+                    </span>
+                  </div>
+                  <p className={featured ? "mt-1 text-[0.88rem] font-semibold text-accent-soft" : "mt-1 text-[0.88rem] font-semibold text-accent-ink"}>{p.kicker}</p>
+                  <div className="grid grid-rows-[1fr] transition-[grid-template-rows] duration-500 ease-[var(--ease-editorial)] md:grid-rows-[0fr] md:group-hover:grid-rows-[1fr] md:group-focus-within:grid-rows-[1fr]">
+                    <p className={featured ? "overflow-hidden text-[0.9rem] text-canvas/85" : "overflow-hidden text-[0.9rem] text-ink-soft"}>
+                      <span className="block pt-3">{p.summary}</span>
+                    </p>
+                  </div>
+                </div>
+              </li>
+            );
+          })}
+        </ul>
+        <p className="mt-10 text-center text-ink-soft">
+          Also: <Link href="/ivy-mentors/" className="font-semibold text-accent-ink hover:underline">Ivy Mentors</Link>,{" "}
+          <Link href="/test-prep/" className="font-semibold text-accent-ink hover:underline">test preparation</Link> and{" "}
+          <Link href="/career-counselling/" className="font-semibold text-accent-ink hover:underline">career counselling</Link>.
+        </p>
       </div>
     </section>
   );
@@ -306,11 +417,11 @@ export function Destinations({ destinations }: { destinations: Destination[] }) 
           }
           intro="Country guides that explain how applications really work — timelines, tests, costs and visas."
         />
-        <ul className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+        <ul className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-5" data-reveal-root="" data-stagger="0.06">
           {destinations.map((d) => (
-            <li key={d.slug}>
-              <Link href={d.path} className="card group flex h-full flex-col p-6 transition-colors hover:border-accent-bright">
-                <span className="t-card">{d.shortName === "USA" ? "United States" : d.name}</span>
+            <li key={d.slug} data-reveal>
+              <Link href={d.path} className="card group flex h-full flex-col p-6 transition-colors hover:border-accent-bright lg:px-5">
+                <span className="t-card lg:!text-[1.22rem]">{d.shortName === "USA" ? "United States" : d.name}</span>
                 <span className="mt-2 text-[0.92rem] leading-snug text-ink-soft">{d.tagline}</span>
                 <span className="mt-auto inline-flex items-center gap-1 pt-5 text-[0.9rem] font-semibold text-accent-ink">
                   Explore <ChevronIcon className="transition-transform duration-200 group-hover:translate-x-0.5" />

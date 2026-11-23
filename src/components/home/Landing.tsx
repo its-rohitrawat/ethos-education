@@ -101,7 +101,7 @@ const pos = (left: string, top: string, from: string, to: string) => ({ left, to
 /** Back layer: smaller, slower, slightly softened — sits behind the word. */
 const backLayer: Floater[] = [
   { src: "/media/photos/campus-quad.webp", w: "clamp(5rem,9vw,9.5rem)", ratio: "4/5", style: pos("4%", "10%", "30vh", "-45vh") },
-  { src: "/media/photos/reading-room.webp", w: "clamp(5rem,8vw,8.5rem)", ratio: "4/3", style: pos("30%", "6%", "45vh", "-60vh") },
+  { src: "/media/photos/reading-room.webp", w: "clamp(5rem,8vw,8.5rem)", ratio: "4/3", style: pos("30%", "6%", "45vh", "-60vh"), hideSm: true },
   { src: "/media/photos/library-hall.webp", w: "clamp(5rem,10vw,10rem)", ratio: "16/10", style: pos("58%", "14%", "20vh", "-40vh"), hideSm: true },
   { src: "/media/photos/study-group.webp", w: "clamp(4.5rem,7vw,7.5rem)", ratio: "1/1", style: pos("84%", "8%", "35vh", "-55vh") },
   { src: "/media/photos/student-writing.webp", w: "clamp(4.5rem,7.5vw,8rem)", ratio: "4/5", style: pos("10%", "62%", "60vh", "-70vh"), hideSm: true },
@@ -112,17 +112,17 @@ const backLayer: Floater[] = [
 
 /** Front layer: larger, faster, with real shadows — passes in front of the word. */
 const frontLayer: Floater[] = [
-  { src: "/media/photos/student-focus.webp", w: "clamp(7rem,13vw,14rem)", ratio: "4/5", style: pos("-2%", "34%", "110vh", "-150vh") },
+  { src: "/media/photos/student-focus.webp", w: "clamp(7rem,13vw,14rem)", ratio: "4/5", style: pos("-2%", "34%", "110vh", "-150vh"), hideSm: true },
   { src: "/media/photos/campus-walk.webp", w: "clamp(7rem,14vw,15rem)", ratio: "4/3", style: pos("50%", "-6%", "140vh", "-170vh"), hideSm: true },
-  { src: "/media/photos/counselling-session.webp", w: "clamp(7rem,12vw,13rem)", ratio: "1/1", style: pos("80%", "30%", "125vh", "-160vh") },
+  { src: "/media/photos/counselling-session.webp", w: "clamp(7rem,12vw,13rem)", ratio: "1/1", style: pos("80%", "30%", "125vh", "-160vh"), hideSm: true },
   { src: "/media/photos/students-walking.webp", w: "clamp(7rem,13vw,14rem)", ratio: "16/10", style: pos("24%", "76%", "150vh", "-185vh"), hideSm: true },
 ];
 
 /** Story cards travel with the front layer, entering one after another. */
 const storySlots = [
-  { className: "w-[clamp(8.5rem,13vw,13.5rem)] aspect-[9/16] max-md:!left-[5%]", style: pos("15%", "18%", "120vh", "-165vh") },
-  { className: "w-[clamp(8.5rem,13vw,13.5rem)] aspect-[9/16] max-md:!left-[54%]", style: pos("44%", "40%", "175vh", "-120vh") },
-  { className: "w-[clamp(8.5rem,13vw,13.5rem)] aspect-[9/16] max-md:!left-[12%]", style: pos("70%", "6%", "220vh", "-90vh") },
+  { className: "w-[clamp(7rem,13vw,13.5rem)] aspect-[9/16] max-md:!left-[5%]", style: pos("15%", "18%", "120vh", "-165vh") },
+  { className: "w-[clamp(7rem,13vw,13.5rem)] aspect-[9/16] max-md:!left-[54%]", style: pos("44%", "40%", "175vh", "-120vh") },
+  { className: "w-[clamp(7rem,13vw,13.5rem)] aspect-[9/16] max-md:!left-[12%]", style: pos("70%", "6%", "220vh", "-90vh") },
 ];
 
 export function toSceneStories(stories: VideoStory[]): SceneStory[] {
@@ -141,7 +141,7 @@ export function toSceneStories(stories: VideoStory[]): SceneStory[] {
 
 export function WordScene({ stories }: { stories: SceneStory[] }) {
   return (
-    <section className={`word-scene relative h-[280vh] ${creative.variable}`} aria-labelledby="scene-title">
+    <section className={`word-scene relative h-[210vh] md:h-[280vh] ${creative.variable}`} aria-labelledby="scene-title">
       <h2 id="scene-title" className="sr-only">
         Ethos students study at leading universities around the world
       </h2>
@@ -353,7 +353,7 @@ export function Pathways({ programmes }: { programmes: Programme[] }) {
                 ) : null}
                 <div className={`${pathwayTones[i % 3]} pointer-events-none absolute inset-x-3 bottom-3 rounded-xl p-5`}>
                   <div className="flex items-start justify-between gap-3">
-                    <h3 className="t-card min-w-0 !text-[clamp(2rem,1.4rem+1.8vw,3rem)]">{p.shortName}</h3>
+                    <h3 className="t-card min-w-0 !text-[clamp(1.5rem,1.2rem+1vw,2.1rem)]">{p.shortName}</h3>
                     <span aria-hidden="true" className="inline-flex shrink-0 items-center gap-1 rounded-full bg-ink px-3.5 py-1.5 font-display text-[0.85rem] font-semibold text-canvas [font-variation-settings:'opsz'_24]">
                       Explore
                       <ChevronIcon className="transition-transform duration-300 group-hover:translate-x-0.5" />

@@ -42,7 +42,7 @@ export function TestPrepGrid({ exams }: { exams: ExamSummary[] }) {
               className="group flex h-full min-h-[10.5rem] flex-col rounded-[var(--radius-card)] bg-mist p-5 transition-colors duration-300 hover:bg-cloud"
             >
               <span className="text-xs font-medium text-ink-soft">{examCategoryLabels[exam.categories[0]]}</span>
-              <span className="t-card mt-2 !text-[2rem]">{exam.name}</span>
+              <span className="t-card mt-2 !text-[1.6rem]">{exam.name}</span>
               <span className="mt-2 text-[0.875rem] leading-snug text-ink-soft">{exam.tagline}</span>
               <span className="mt-auto inline-flex items-center gap-1 pt-4 text-[0.875rem] font-medium text-brand-bright">
                 Prepare <ChevronIcon className="transition-transform duration-300 group-hover:translate-x-0.5" />
