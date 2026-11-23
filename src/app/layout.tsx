@@ -18,7 +18,7 @@ import "./globals.css";
  * Client's type choices (23 Nov 2026), all SIL Open Font License, self-hosted from app/fonts/ (variable
  * Latin WOFF2 files from Google Fonts — no network needed at build time):
  * Bricolage Grotesque for headings / navigation / labels / buttons, DM Sans for paragraphs,
- * Fraunces (semibold, soft) for card titles — the same family as the Worldwide word.
+ * Fraunces (semibold, soft) for card titles.
  */
 const heading = localFont({
   src: [{ path: "./fonts/BricolageGrotesque-Variable.woff2", weight: "200 800", style: "normal" }],

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { CareerBlock, ConsultBlock, Destinations, FAQBand, Numbers, ProgrammePodium, Steps, StoriesBand, WhyEthos, heroSlides, toStoryVideos } from "@/components/home/Brochure";
-import { WordScene, toSceneStories } from "@/components/home/Landing";
+import { AtAGlance } from "@/components/home/AtAGlance";
 import { HeroSlider } from "@/components/home/HeroSlider";
 import { homepageFaqIds } from "@/content/faqs";
 import { getDestinations, getFaqs, getProcessSteps, getProgrammes, getStats, getVideoStories } from "@/lib/cms";
@@ -30,7 +30,7 @@ export default async function HomePage() {
     <>
       <HeroSlider slides={heroSlides(videos)} />
       <Numbers stats={stats} />
-      <WordScene stories={toSceneStories(stories)} />
+      <AtAGlance stories={stories} steps={steps} destinations={destinations} />
       <WhyEthos />
       <Steps steps={steps} />
       <ProgrammePodium programmes={programmes} />
