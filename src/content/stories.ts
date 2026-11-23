@@ -3,7 +3,8 @@ import type { Outcome, VideoStory } from "./types";
 /**
  * Video testimonials already published on the current Ethos website. Quotes are verbatim excerpts
  * from the auto-generated transcripts (lightly cleaned of filler words only; timestamps recorded so
- * Ethos can check them against the video). `verified: false` = confirm consent for the new site.
+ * Ethos can check them against the video).
+ * Consent to feature all six on the new site: confirmed by Ethos on 23 Nov 2026 → `verified: true`.
  */
 export const videoStories: VideoStory[] = [
   {
@@ -16,7 +17,7 @@ export const videoStories: VideoStory[] = [
     video: { src: "/media/stories/ansh-chawla.mp4", poster: "/media/stories/ansh-chawla-portrait.webp", captions: "/media/stories/ansh-chawla.vtt", durationSeconds: 113 },
     quote: "Think of it as a relationship you build. It’s not a one-off kind of situation — I still get in touch with the team.",
     quoteTimestamp: "1:22–1:34",
-    verified: false,
+    verified: true,
   },
   {
     id: "nikita-singhal",
@@ -29,7 +30,7 @@ export const videoStories: VideoStory[] = [
     video: { src: "/media/stories/nikita-singhal.mp4", poster: "/media/stories/nikita-singhal-portrait.webp", captions: "/media/stories/nikita-singhal.vtt", durationSeconds: 80 },
     quote: "What really stood out for us was that the entire team had a very deep understanding of the entire process and the paperwork.",
     quoteTimestamp: "0:45–0:55",
-    verified: false,
+    verified: true,
   },
   {
     id: "riya-malhotra",
@@ -41,7 +42,7 @@ export const videoStories: VideoStory[] = [
     video: { src: "/media/stories/riya-malhotra.mp4", poster: "/media/stories/riya-malhotra-portrait.webp", captions: "/media/stories/riya-malhotra.vtt", durationSeconds: 57 },
     quote: "All the counsellors and teachers were always really available, which made the whole process less daunting.",
     quoteTimestamp: "0:38–0:44",
-    verified: false,
+    verified: true,
   },
   {
     id: "sanjay-sinha",
@@ -54,7 +55,7 @@ export const videoStories: VideoStory[] = [
     video: { src: "/media/stories/sanjay-sinha.mp4", poster: "/media/stories/sanjay-sinha-portrait.webp", captions: "/media/stories/sanjay-sinha.vtt", durationSeconds: 98 },
     quote: "We identified all the top universities, so we had a mix of dream and mid colleges. There was a lot of guidance there.",
     quoteTimestamp: "0:25–0:39",
-    verified: false,
+    verified: true,
   },
   {
     id: "lakshya-madaan",
@@ -66,7 +67,7 @@ export const videoStories: VideoStory[] = [
     video: { src: "/media/stories/lakshya-madaan.mp4", poster: "/media/stories/lakshya-madaan-portrait.webp", captions: "/media/stories/lakshya-madaan.vtt", durationSeconds: 99 },
     quote: "The counsellors and the essay coach were extremely helpful. They were always in contact with me.",
     quoteTimestamp: "0:00–0:07",
-    verified: false,
+    verified: true,
   },
   {
     id: "munish-malhotra",
@@ -79,7 +80,7 @@ export const videoStories: VideoStory[] = [
     video: { src: "/media/stories/munish-malhotra.mp4", poster: "/media/stories/munish-malhotra-portrait.webp", captions: "/media/stories/munish-malhotra.vtt", durationSeconds: 146 },
     quote: "It’s just not selecting the country or the university. There is a lot more that goes into it.",
     quoteTimestamp: "0:00–0:05",
-    verified: false,
+    verified: true,
   },
 ];
 

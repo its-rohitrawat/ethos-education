@@ -12,7 +12,7 @@ Preview any time with `npm run dev`. Development shows unverified items so the d
 | A2 | “3,000+ students guided” | same | Count, date range, which services count |
 | A3 | “300+ universities” | same | Meaning. Old site said “Universities Represented”, which can imply partnerships — new label is “Universities in our students’ outcomes” |
 | A4 | “99% visa success” | same | Numerator, denominator, period |
-| A5 | Six video testimonials (Ansh Chawla, Nikita Singhal, Riya Malhotra, Sanjay Sinha, Lakshya Madaan, Munish Malhotra) | `src/content/stories.ts` | Written consent to feature on the new site; spelling; programme details (from transcripts — see A7) |
+| A5 | Six video testimonials (Ansh Chawla, Nikita Singhal, Riya Malhotra, Sanjay Sinha, Lakshya Madaan, Munish Malhotra) | `src/content/stories.ts` | **Consent confirmed by Ethos (23 Nov 2026) — now shown in production.** Still worth a final check of spelling and programme details (from transcripts — see A7) |
 | A6 | 30 named student outcomes (Harvard, Stanford, Cambridge…) | `src/content/stories.ts` → `outcomes` | Consent for each name; spellings; “HEC, Oxford” and “Boston School of Architecture” wording as listed on the old site |
 | A7 | Pull quotes and programme details from the videos | `stories.ts` (`quote`, `quoteTimestamp`) | Quotes are verbatim from auto-transcripts — check each against the video at the stated timestamp |
 | A8 | Full office addresses (Gurugram, Noida, Ranchi, Dublin CA) | `src/content/site.ts` → `offices` | Current addresses; cities are shown either way |
